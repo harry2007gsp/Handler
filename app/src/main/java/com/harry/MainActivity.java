@@ -26,25 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void fetchDataOnButton(View view) {
         networkConnection = new NetworkConnection();
-        Runnable runnable = new Runnable() {
-            public String runnableString = "abcd";
-
-            @Override
-            //this runnable is just like first wait for something to get executed and processed and then this
-            // would be displayed after that.
-            public void run() {
-                Log.d("test", runnableString);
-            }
-        };
-        networkConnection.fetchData(myHandler, runnable);
-
-
+        networkConnection.fetchData(myHandler);
     }
+
 
     public static class MyRunnable implements Runnable {
         private final String message;
 
-        MyRunnable(final String message) {
+        public MyRunnable(final String message) {
             this.message = message;
         }
         public void run() {
@@ -63,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 //            String s = runnable.getData().getString("string");
 //            text.setText(s);
 //        }
-    }
+//    }
 //    static class MyHandler extends Handler {
 //        @Override
 //        public void handleMessage(Message msg) {
@@ -72,5 +61,5 @@ public class MainActivity extends AppCompatActivity {
 //            String s = msg.getData().getString("string");
 //            text.setText(s);
 //        }
-//    }
+    }
 }

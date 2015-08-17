@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class NetworkConnection {
     ArrayList<Model> list = new ArrayList<>();
 
-    public void fetchData(final MainActivity.MyHandler myHandler, final Runnable runnable) {
+    public void fetchData(final MainActivity.MyHandler myHandler) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -36,44 +36,11 @@ public class NetworkConnection {
                 NetworkConnection networkConnection = new NetworkConnection();
                 String string = networkConnection.downloadWithURLConnecton();
                 list = networkConnection.parseData(string);
-                for (Model m : list) {
-                    Log.d("test", m.getPlace());
-                }
-//                Message message = myHandler.obtainMessage();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("string",list.get(0).getPlace());
-//                message.setData(bundle);
-//                myHandler.sendMessage(message);
-//                myHandler.post(runnable);
+
                 Runnable myRunnable = new MainActivity.MyRunnable(list.get(0).getPlace());
                 myHandler.post(myRunnable);
             }
         }).start();
-    }
-
-    public String downloadData() {
-        String input="";
-        String url = "http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&country=AT&username=demo";
-        InputStream inputStream = null;
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
-        try {
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            inputStream = httpResponse.getEntity().getContent();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            StringBuilder b = new StringBuilder();
-
-            while ((line = br.readLine()) != null) {
-                b.append(line);
-            }
-            input = b.toString();
-//            Log.d("test", input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return input;
     }
 
     public String downloadWithURLConnecton() {
@@ -106,7 +73,7 @@ public class NetworkConnection {
     public ArrayList<Model> parseData(String string) {
         ArrayList<Model> modelList = new ArrayList<>();
         Log.d("test", "got in parse data");
-        Log.d("test", string);
+//        Log.d("test", string);
         try {
             JSONObject object = new JSONObject(string);
             JSONArray array = object.optJSONArray("postalcodes");
